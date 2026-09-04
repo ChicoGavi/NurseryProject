@@ -5,13 +5,22 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "node --watch --env-file=.env src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "prisma": "prisma",
+    "db:migrate": "prisma migrate dev --schema=./prisma/schema.prisma",
+    "db:generate": "prisma generate --schema=./prisma/schema.prisma"
   },
   "keywords": [],
   "type": "module",
   "dependencies": {
+    "@prisma/client": "^5.22.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0",
     "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0"
   }
 }
