@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Monorepo API Nursery
+  description: Especificación API First para el proyecto
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Servidor de desarrollo local
+
+paths:
+  /api/health:
+    get:
+      summary: Verifica el estado del servidor
+      tags:
+        - Sistema
+      responses:
+        '200':
+          description: El servidor está en línea
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  environment:
+                    type: string
+                    example: development
+                  serverTime:
+                    type: string
+                    format: date-time
+
+  /api/users:
+    get:
+      summary: Obtiene la lista de usuarios
+      tags:
+        - Usuarios
+      responses:
+        '200':
+          description: Lista devuelta exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - name
+        - email
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: "Ada Lovelace"
+        email:
+          type: string
+          format: email
+          example: "ada@example.com"
