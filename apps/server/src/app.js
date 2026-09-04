@@ -6,3 +6,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', routes);
+
+app.get('/', (req, res) => {
+  res.status(200).json({ welcome: 'Welcome Agreee world nursery' });
+});
+
+export default app;
