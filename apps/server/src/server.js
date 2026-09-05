@@ -1,13 +1,10 @@
 import { env } from '../config/env.js';
-import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-const app = express();
-app.use(express.json());
+import app from './app.js';
 
 // 1. Configurar rutas absolutas para ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -40,8 +37,8 @@ app.get('/api/users', (req, res) => {
 });
 
 app.listen(env.PORT, () => {
-  console.info(`[server]: API corriendo en http://localhost:${env.PORT}`);
+  console.info(`[server]: API corriendo en http://127.0.0.1:${env.PORT}`);
   console.info(
-    `[docs]: Documentación Swagger en http://localhost:${env.PORT}/api-docs`
+    `[docs]: Documentación Swagger en http://127.0.0.1:${env.PORT}/api-docs`
   );
 });
