@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/auth.service';
 
 export default function RegisterForm() {
-  // 1. Estado para los valores de los inputs
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
   });
 
-  // 2. Estados de control de la petición HTTP
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState({ type: null, text: '' });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Si había un error en pantalla y el usuario edita, limpiamos la alerta
     if (statusMessage.text) setStatusMessage({ type: null, text: '' });
   };
 
@@ -25,24 +25,22 @@ export default function RegisterForm() {
     setStatusMessage({ type: null, text: '' });
 
     try {
-      // Invocamos nuestro servicio modular
-      const res = await registerUser(formData);
-
+      await registerUser(formData);
       setStatusMessage({
         type: 'success',
-        text: res.message || 'Registro exitoso. ¡Bienvenido!',
+        text: '¡Registro exitoso! Redirigiendo al login...',
       });
 
-      // Limpiamos los campos
-      setFormData({ fullName: '', email: '', password: '' });
+      // Espera 1.5 segundos para que el usuario lea el mensaje y redirige al login
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
     } catch (err) {
-      // Atrapamos el error que disparó nuestro servicio
       setStatusMessage({
         type: 'error',
         text: err.message,
       });
     } finally {
-      // Se ejecuta tanto en éxito como en fallo para reactivar el botón
       setIsLoading(false);
     }
   };
@@ -54,9 +52,11 @@ export default function RegisterForm() {
           <h2 className="text-center text-3xl font-extrabold text-gray-900">
             Crear cuenta
           </h2>
+          <p className="mt-1 text-center text-sm text-gray-500">
+            Ingresa tus datos para registrarte
+          </p>
         </div>
 
-        {/* Notificaciones dinámicas de error o éxito */}
         {statusMessage.text && (
           <div
             className={`rounded-md p-3 text-sm font-medium border ${
@@ -121,11 +121,21 @@ export default function RegisterForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full cursor-pointer  flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300 disabled:cursor-not-allowed transition-all"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-300 disabled:cursor-not-allowed transition-all"
           >
-            {isLoading ? 'Enviando al servidor...' : 'Registrarme'}
+            {isLoading ? 'Registrando...' : 'Registrarse'}
           </button>
         </form>
+
+        <p className="text-center text-sm text-gray-600">
+          ¿Ya tienes cuenta?{' '}
+          <Link
+            to="/"
+            className="font-medium text-indigo-600 hover:text-indigo-500 underline"
+          >
+            Inicia sesión
+          </Link>
+        </p>
       </div>
     </div>
   );
