@@ -1,6 +1,5 @@
 // IMPORT SERVICES
 import { registerService, loginService } from '../services/authService.js';
-
 import validateUser from '../utils/validateData.js';
 
 export const register = async (req, res) => {
