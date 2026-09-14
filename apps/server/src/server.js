@@ -20,15 +20,6 @@ const swaggerDocument = YAML.parse(swaggerFile);
 // 3. Montar la interfaz visual de Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Rutas de la aplicación
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    environment: env.NODE_ENV,
-    serverTime: new Date().toISOString(),
-  });
-});
-
 // Ruta ficticia para cumplir el contrato (temporal)
 app.get('/api/users', (req, res) => {
   res.json([
