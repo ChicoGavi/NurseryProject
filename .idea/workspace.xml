@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="408d4e02-36be-45d4-8d08-0f74ab115c34" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/apps/server/src/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/routes/auth.js" afterDir="false" />
-    </list>
+    <list default="true" id="408d4e02-36be-45d4-8d08-0f74ab115c34" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,8 +13,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JSX File" />
         <option value="JavaScript File" />
+        <option value="JSX File" />
       </list>
     </option>
   </component>
@@ -39,7 +37,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "feat(frontend)/auth/login",
+    "git-widget-placeholder": "main",
     "javascript.preferred.runtime.type.id": "node",
     "last_opened_file_path": "/home/elprincipemestizo/WebstormProjects/Projects/NurseryProject",
     "node.js.detected.package.eslint": "true",
@@ -75,6 +73,7 @@
       <workItem from="1788464840446" duration="1741000" />
       <workItem from="1788531425283" duration="24545000" />
       <workItem from="1788793110353" duration="1192000" />
+      <workItem from="1789392646855" duration="19487000" />
     </task>
     <servers />
   </component>
