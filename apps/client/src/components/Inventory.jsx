@@ -1,45 +1,52 @@
-// src/components/Inventory.jsx
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import React, { useState } from 'react';
+import { useInventory } from '../hooks/useInventory'; // Ajusta la ruta si es necesario
+import PlantCard from './PlantCard'; // Ajusta la ruta si es necesario
+import { useAuth } from '../context/AuthContext'; // Necesitamos el token para borrar
+import EditPlantModal from './EditPlantModal'; // 👇 Importamos el Modal
 
 export default function Inventory() {
-  const { token, logout } = useAuth();
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { items, loading, error, deletePlant, updatePlant } = useInventory();
+  const { token } = useAuth(); // Extraemos el token para autorizar el borrado
 
-  useEffect(() => {
-    const fetchInventory = async () => {
-      try {
-        setLoading(true);
-        // Ajusta la URL según la ruta de tu API backend
-        const response = await fetch('http://localhost:8080/api/plants', {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [plantToEdit, setPlantToEdit] = useState(null);
 
-        if (response.status === 401 || response.status === 403) {
-          logout();
-          throw new Error('Sesión expirada o no autorizada');
-        }
+  // ==========================================
+  // LÓGICA PARA ELIMINAR
+  // ==========================================
+  const handleDelete = async (plantId) => {
+    const confirmar = window.confirm(
+      '¿Estás seguro de que deseas eliminar esta planta?'
+    );
+    if (!confirmar) return;
 
-        if (!response.ok) {
-          throw new Error('Error al cargar los datos del inventario');
-        }
+    try {
+      // Llamamos a la función limpia del hook
+      await deletePlant(plantId);
+      alert('Planta eliminada correctamente');
+    } catch (error) {
+      alert('Hubo un problema al intentar eliminar la planta.');
+    }
+  };
 
-        const data = await response.json();
-        setItems(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // ==========================================
+  // LÓGICA PARA EDITAR
+  // ==========================================
+  const handleEditClick = (plant) => {
+    setPlantToEdit(plant);
+    setIsEditModalOpen(true);
+  };
 
-    fetchInventory();
-  }, [token, logout]);
+  const handleSaveEdit = async (plantId, updatedData) => {
+    try {
+      await updatePlant(plantId, updatedData);
+      alert('Planta actualizada correctamente');
+      setIsEditModalOpen(false); // Cerramos el modal tras guardar
+      setPlantToEdit(null);
+    } catch (error) {
+      alert('Hubo un error al actualizar la planta.');
+    }
+  };
 
   if (loading) {
     return (
@@ -62,6 +69,14 @@ export default function Inventory() {
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      {isEditModalOpen && (
+        <EditPlantModal
+          plant={plantToEdit}
+          onClose={() => setIsEditModalOpen(false)}
+          onSave={handleSaveEdit}
+        />
+      )}
+
       {/* Header del inventario */}
       <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -84,81 +99,15 @@ export default function Inventory() {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {items.map((plant) => {
-            const isLowStock = plant.stock <= 5;
-
-            return (
-              <article
-                key={plant.id}
-                className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
-              >
-                {/* Contenedor de Imagen */}
-                <div className="relative aspect-square w-full overflow-hidden bg-slate-100">
-                  <img
-                    src={
-                      plant.image || 'https://placehold.co/400x400?text=Planta'
-                    }
-                    alt={plant.name}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  {/* Badge de Categoría */}
-                  <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-slate-800 shadow-sm backdrop-blur-sm">
-                    {plant.category?.name || plant.category || 'General'}
-                  </span>
-                </div>
-
-                {/* Contenido de la Card */}
-                <div className="flex flex-1 flex-col p-4">
-                  <div className="mb-2 flex items-start justify-between gap-2">
-                    <h2
-                      className="text-base font-semibold text-slate-900 line-clamp-1"
-                      title={plant.name}
-                    >
-                      {plant.name}
-                    </h2>
-                    <span className="text-base font-bold text-emerald-600">
-                      ${Number(plant.price).toLocaleString('es-CO')}
-                    </span>
-                  </div>
-
-                  {/* Stock */}
-                  <div className="mt-1 flex items-center gap-2">
-                    <span
-                      className={`h-2 w-2 rounded-full ${
-                        plant.stock === 0
-                          ? 'bg-red-500'
-                          : isLowStock
-                            ? 'bg-amber-500'
-                            : 'bg-emerald-500'
-                      }`}
-                    />
-                    <span className="text-xs text-slate-600">
-                      Stock:{' '}
-                      <strong
-                        className={
-                          plant.stock === 0
-                            ? 'text-red-600'
-                            : isLowStock
-                              ? 'text-amber-600'
-                              : 'text-slate-900'
-                        }
-                      >
-                        {plant.stock} uds.
-                      </strong>
-                    </span>
-                  </div>
-
-                  {/* Creado por (Footer de la Card) */}
-                  <div className="mt-auto border-t border-slate-100 pt-3 text-xs text-slate-400">
-                    Registrado por:{' '}
-                    <span className="font-medium text-slate-600">
-                      {plant.created_by?.name || plant.created_by || 'Sistema'}
-                    </span>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+          {items.map((plant) => (
+            <PlantCard
+              key={plant.id}
+              plant={plant}
+              // 👇 AQUÍ CONECTAMOS TODO: Le pasamos las funciones a la tarjeta
+              onEdit={handleEditClick}
+              onDelete={handleDelete}
+            />
+          ))}
         </div>
       )}
     </section>

@@ -23,7 +23,10 @@ export const registerService = async (email, password, fullName) => {
 };
 
 export const loginService = async (email, password) => {
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({
+    where: { email },
+    include: { role: true },
+  });
 
   if (!user) throw new Error('Password or email are invalid!');
 
@@ -37,5 +40,5 @@ export const loginService = async (email, password) => {
     { expiresIn: '3h' }
   );
 
-  return token;
+  return { token, user };
 };
