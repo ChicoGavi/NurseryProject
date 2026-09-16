@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="408d4e02-36be-45d4-8d08-0f74ab115c34" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/apps/client/src/components/EditPlantModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/client/src/components/PlantCard.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/client/src/hooks/useInventory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/client/src/components/Inventory.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/apps/client/src/components/Inventory.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/client/src/services/auth.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/client/src/services/auth.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/server/src/controllers/authController.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/controllers/authController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/server/src/services/authService.js" beforeDir="false" afterPath="$PROJECT_DIR$/apps/server/src/services/authService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
