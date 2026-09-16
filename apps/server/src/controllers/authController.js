@@ -26,9 +26,9 @@ export const login = async (req, res) => {
       return res.status(400).json({ error: 'Complete the fields!' });
 
     const { email, password } = req.body;
-    const token = await loginService(email, password);
+    const data = await loginService(email, password);
 
-    return res.status(200).json({ token });
+    return res.status(200).send(data);
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }

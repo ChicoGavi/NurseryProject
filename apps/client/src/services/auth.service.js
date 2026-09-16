@@ -1,5 +1,5 @@
 const BASE_URL =
-  import.meta.env?.VITE_BACKEND_URL || 'http://localhost:400/api';
+  import.meta.env?.VITE_BACKEND_URL || 'http://localhost:8080/api';
 
 export const registerUser = async (newUser) => {
   try {
